@@ -7,7 +7,7 @@ package database
 
 import (
 	"context"
-	"database/sql"
+	"time"
 )
 
 const createURL = `-- name: CreateURL :one
@@ -19,12 +19,12 @@ VALUES (
     $2,
     $3
 )
-RETURNING id, created_at, updated_at, expired_at, dest
+RETURNING id, dest, created_at, updated_at, expired_at
 `
 
 type CreateURLParams struct {
 	ID        string
-	ExpiredAt sql.NullTime
+	ExpiredAt time.Time
 	Dest      string
 }
 
@@ -33,10 +33,10 @@ func (q *Queries) CreateURL(ctx context.Context, arg CreateURLParams) (Url, erro
 	var i Url
 	err := row.Scan(
 		&i.ID,
+		&i.Dest,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.ExpiredAt,
-		&i.Dest,
 	)
 	return i, err
 }

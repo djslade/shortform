@@ -7,12 +7,13 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Fenroe/shortform/internal/database"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 type apiConfig struct {
-	DB *sql.DB
+	DB *database.Queries
 }
 
 func main() {
@@ -37,13 +38,14 @@ func main() {
 
 	// Config
 	config := apiConfig{
-		DB: db,
+		DB: database.New(db),
 	}
 
 	// Handler
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /url", config.handlerURL)
+	mux.HandleFunc("POST /url", config.handlerCreateURL)
 
 	// Server
 	server := http.Server{

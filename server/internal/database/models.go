@@ -5,14 +5,13 @@
 package database
 
 import (
-	"database/sql"
 	"time"
 )
 
 type Url struct {
 	ID        string
+	Dest      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	ExpiredAt sql.NullTime
-	Dest      string
+	ExpiredAt time.Time
 }
