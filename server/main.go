@@ -1,13 +1,19 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
+
+type apiConfig struct {
+	DB *sql.DB
+}
 
 func main() {
 	// Retrieve env variables
@@ -15,13 +21,30 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("PORT env variables is not set")
+		log.Fatal("PORT env variable is not set")
+	}
+
+	dbConnectionString := os.Getenv("DB_CONNECTION_STRING")
+	if dbConnectionString == "" {
+		log.Fatal("DB_CONNECTION_STRING env variable is not set")
+	}
+
+	// DB setup
+	db, err := sql.Open("postgres", dbConnectionString)
+	if err != nil {
+		log.Fatal("Unable to start database")
+	}
+
+	// Config
+	config := apiConfig{
+		DB: db,
 	}
 
 	// Handler
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /url", handlerURL)
+	mux.HandleFunc("GET /url", config.handlerURL)
+
 	// Server
 	server := http.Server{
 		Addr:    ":" + port,
