@@ -8,3 +8,6 @@ VALUES (
     $3
 )
 RETURNING *;
+
+-- name: CheckForURLWithID :one
+SELECT COUNT(*) FROM urls WHERE id=$1;

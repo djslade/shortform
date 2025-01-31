@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/Fenroe/shortform/internal/database"
@@ -35,22 +36,56 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 	var body createURLParams
 
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		// TODO: Internal Server Error
+		respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
 		return
 	}
 
 	if body.ID == nil {
-		// TODO: Bad request
-		return
+		// TODO: Random ID
+		for {
+			randomID, err := generateURLID(5)
+			if err != nil {
+				respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
+				return
+			}
+			count, err := cfg.DB.CheckForURLWithID(context.Background(), randomID)
+			if err != nil {
+				respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
+				return
+			}
+			if count == 0 {
+				body.ID = &randomID
+				break
+			}
+		}
+
+	} else {
+		count, err := cfg.DB.CheckForURLWithID(context.Background(), *body.ID)
+		if err != nil {
+			respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
+			return
+		}
+		if count > 0 {
+			respondWithError(w, http.StatusBadRequest, "This ID is already in use", nil)
+			return
+		}
 	}
 
 	if body.ExpiredAt == nil {
-		// TODO: Bad request
-		return
+		// Generate an expiry date
+		// Set to 30 days for now. TODO: Helper function might improve maintainability
+		expiryDate := time.Now().Add(time.Hour * 24 * 30).Unix()
+		body.ExpiredAt = &expiryDate
 	}
 
 	if body.Dest == nil {
-		// TODO: Bad request
+		respondWithError(w, http.StatusBadRequest, "Dest field missing from request", nil)
+		return
+	}
+
+	// Dest must be an absolute URL.
+	if _, err := url.ParseRequestURI(*body.Dest); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Dest must be a valid, absolute URL", nil)
 		return
 	}
 
@@ -63,7 +98,7 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 		},
 	)
 	if err != nil {
-		// TODO: Handle database error
+		respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
 		return
 	}
 	var res createURLResponse
@@ -71,11 +106,5 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 	res.URL.Dest = url.Dest
 	res.URL.ID = url.ID
 	res.URL.ExpiredAt = url.ExpiredAt.Unix()
-	data, err := json.Marshal(res)
-	if err != nil {
-		// TODO: Internal Server error
-		return
-	}
-	w.WriteHeader(http.StatusCreated)
-	w.Write(data)
+	respondWithJSON(w, http.StatusCreated, res)
 }

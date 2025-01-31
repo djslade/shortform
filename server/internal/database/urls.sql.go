@@ -10,6 +10,17 @@ import (
 	"time"
 )
 
+const checkForURLWithID = `-- name: CheckForURLWithID :one
+SELECT COUNT(*) FROM urls WHERE id=$1
+`
+
+func (q *Queries) CheckForURLWithID(ctx context.Context, id string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, checkForURLWithID, id)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createURL = `-- name: CreateURL :one
 INSERT INTO urls (id, created_at, updated_at, expired_at, dest)
 VALUES (
