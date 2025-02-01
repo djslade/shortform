@@ -32,17 +32,28 @@ function App() {
   return (
     <>
       <header className="header">
-        <img src="/text-logo.svg" alt="Shortform" />
+        <a href="/">
+          <img src="/text-logo.svg" alt="Shortform" className="text-logo" />
+        </a>
         <button className="header-mobile-menu-btn">
-          <img src="/mobile-menu-icon.svg" />
+          <img src="/mobile-menu-icon.svg" className="mobile-menu-icon" />
         </button>
       </header>
-      <img src="/hero-splash-bg.svg" alt="" />
-      <h1>Shortform Link Shortener</h1>
-      <p>
-        This website allows you to condense larger URLs into simpler, bite-sized
-        links.
-      </p>
+      <div className="hero-img-container">
+        <img src="/hero-splash-bg.svg" className="hero-img" alt="" />
+      </div>
+      <div className="hero-container">
+        <div className="hero-text-container">
+          <h1 className="hero-heading">More than just shorter links</h1>
+          <h2 className="hero-subheading">
+            Build your brand’s recognition and get detailed insights on how your
+            links are performing.
+          </h2>
+        </div>
+        <a href="/" className="hero-btn">
+          Get Started
+        </a>
+      </div>
       <form action="">
         <div className="">
           <label htmlFor="dest">Destination URL</label>
