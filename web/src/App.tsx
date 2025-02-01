@@ -54,19 +54,23 @@ function App() {
           Get Started
         </a>
       </div>
-      <form action="">
-        <div className="">
-          <label htmlFor="dest">Destination URL</label>
-          <input
-            type="url"
-            id="dest"
-            name="dest"
-            value={dest}
-            onChange={changeDest}
-          />
-        </div>
-        <button>Create Link</button>
-      </form>
+      <section className="shorten-container">
+        <form className="shorten-form">
+          <div className="">
+            <label htmlFor="dest"></label>
+            <input
+              className="shorten-form-input"
+              placeholder="Shorten a link here..."
+              type="url"
+              id="dest"
+              name="dest"
+              value={dest}
+              onChange={changeDest}
+            />
+          </div>
+          <button className="shorten-form-btn">Shorten It!</button>
+        </form>
+      </section>
     </>
   );
 }

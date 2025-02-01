@@ -37,7 +37,7 @@
 
 .hero-container {
   text-align: center;
-  padding: 0 24px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,4 +79,41 @@
   background-color: #2bd0d0;
   color: #ffffff;
   text-decoration: none;
+}
+
+.shorten-container {
+  padding: 24px;
+}
+
+.shorten-form {
+  background-color: #3a3054;
+  background-image: url("/bg-shorten-mobile.svg");
+  background-repeat: no-repeat;
+  background-position: top right;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 16px;
+}
+
+.shorten-form-input {
+  width: 100%;
+  font-size: 16px;
+  line-height: 36px;
+  padding: 0 16px;
+  height: 48px;
+  border-radius: 8px;
+  color: #34313d;
+  font-weight: 500;
+}
+
+.shorten-form-btn {
+  background-color: #2bd0d0;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 18px;
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
 }
