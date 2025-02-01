@@ -3,3 +3,18 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.header {
+  /*
+  padding - if it doesn't look right then bottom should have its padding removed
+  */
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-mobile-menu-btn {
+  padding: 0;
+  background-color: transparent;
+}

@@ -25,9 +25,9 @@ func main() {
 		log.Fatal("PORT env variable is not set")
 	}
 
-	dbConnectionString := os.Getenv("DB_CONNECTION_STRING")
+	dbConnectionString := os.Getenv("PG_CONNECTION_STRING")
 	if dbConnectionString == "" {
-		log.Fatal("DB_CONNECTION_STRING env variable is not set")
+		log.Fatal("PG_CONNECTION_STRING env variable is not set")
 	}
 
 	// DB setup
@@ -45,6 +45,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /url", config.handlerURL)
+	mux.HandleFunc("GET /redirect", config.handlerRedirect)
 	mux.HandleFunc("POST /url", config.handlerCreateURL)
 
 	// Server

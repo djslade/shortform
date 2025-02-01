@@ -51,3 +51,20 @@ func (q *Queries) CreateURL(ctx context.Context, arg CreateURLParams) (Url, erro
 	)
 	return i, err
 }
+
+const getURLByID = `-- name: GetURLByID :one
+SELECT id, dest, created_at, updated_at, expired_at FROM urls WHERE id=$1
+`
+
+func (q *Queries) GetURLByID(ctx context.Context, id string) (Url, error) {
+	row := q.db.QueryRowContext(ctx, getURLByID, id)
+	var i Url
+	err := row.Scan(
+		&i.ID,
+		&i.Dest,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ExpiredAt,
+	)
+	return i, err
+}

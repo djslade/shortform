@@ -11,3 +11,6 @@ RETURNING *;
 
 -- name: CheckForURLWithID :one
 SELECT COUNT(*) FROM urls WHERE id=$1;
+
+-- name: GetURLByID :one
+SELECT * FROM urls WHERE id=$1;
