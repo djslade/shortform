@@ -83,6 +83,13 @@
 
 .shorten-container {
   padding: 24px;
+  background-image: linear-gradient(
+    to bottom,
+    #ffffff 0px,
+    #ffffff 104px,
+    #eff1f7 104px,
+    #eff1f7 100%
+  );
 }
 
 .shorten-form {
