@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { FaGithub } from "react-icons/fa";
 
 function App() {
   const [dest, setDest] = useState<string>("");
@@ -126,6 +127,59 @@ function App() {
           </div>
         </div>
       </section>
+      <section className="boost-container">
+        <div className="boost-cta-container">
+          <h1 className="boost-cta-heading">Boost your links today</h1>
+          <a href="/" className="hero-btn">
+            Get Started
+          </a>
+        </div>
+      </section>
+      <footer className="footer">
+        <img
+          src="/text-logo-footer.svg"
+          alt="Shortform"
+          className="footer-logo"
+        />
+        <div className="footer-links-container">
+          <h3 className="footer-link-heading">Features</h3>
+          <div className="inner-links-container">
+            <a href="/" className="footer-link">
+              Link Shortening
+            </a>
+            <a href="/" className="footer-link">
+              Branded Links
+            </a>
+            <a href="/" className="footer-link">
+              Analytics
+            </a>
+          </div>
+        </div>
+        <div className="footer-links-container">
+          <h3 className="footer-link-heading">Resources</h3>
+          <div className="inner-links-container">
+            <a href="/" className="footer-link">
+              Developers
+            </a>
+          </div>
+        </div>
+        <div className="footer-links-container">
+          <h3 className="footer-link-heading">Other</h3>
+          <div className="inner-links-container">
+            <a href="/" className="footer-link">
+              About
+            </a>
+            <a href="/" className="footer-link">
+              Contact
+            </a>
+          </div>
+        </div>
+        <div className="footer-social-container">
+          <a href="/" className="footer-social">
+            <FaGithub className="footer-social-icon" />
+          </a>
+        </div>
+      </footer>
     </>
   );
 }
