@@ -71,6 +71,61 @@ function App() {
           <button className="shorten-form-btn">Shorten It!</button>
         </form>
       </section>
+      <section className="features-container">
+        <div className="features-heading-container">
+          <h1 className="features-heading">Advanced Statistics</h1>
+          <h3 className="features-text">
+            Track how your links are performing across the web with our advanced
+            statistics dashboard.
+          </h3>
+        </div>
+        <div className="features-cards-container">
+          <div className="features-info-container">
+            <div className="features-icon-container">
+              <img
+                src="/icon-brand-recognition.svg"
+                alt=""
+                className="features-icon"
+              />
+            </div>
+            <h2 className="features-subeading">Brand Recognition</h2>
+            <h3 className="features-text">
+              Boost your brand recognition with each click. Generic links don’t
+              mean a thing. Branded links help instil confidence in your
+              content.
+            </h3>
+          </div>
+          <div className="features-info-container">
+            <div className="features-icon-container">
+              <img
+                src="/icon-detailed-records.svg"
+                alt=""
+                className="features-icon"
+              />
+            </div>
+            <h2 className="features-subeading">Detailed Records</h2>
+            <h3 className="features-text-small">
+              Gain insights into who is clicking your links. Knowing when and
+              where people engage with your content helps inform better
+              decisions.
+            </h3>
+          </div>
+          <div className="features-info-container">
+            <div className="features-icon-container">
+              <img
+                src="/icon-fully-customizable.svg"
+                alt=""
+                className="features-icon"
+              />
+            </div>
+            <h2 className="features-subeading">Fully Customizable</h2>
+            <h3 className="features-text-small">
+              Improve brand awareness and content discoverability through
+              customizable links, supercharging audience engagement.
+            </h3>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
