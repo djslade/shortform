@@ -1,6 +1,14 @@
 import { useState } from "react";
 import "./App.css";
 import { FaGithub } from "react-icons/fa";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+
+const CreateURLSchema = Yup.object().shape({
+  dest: Yup.string()
+    .required("Please add a link")
+    .url("Please add a valid URL"),
+});
 
 function App() {
   const [dest, setDest] = useState<string>("");
@@ -56,21 +64,77 @@ function App() {
         </a>
       </div>
       <section className="shorten-container">
-        <form className="shorten-form">
-          <div className="">
-            <label htmlFor="dest"></label>
-            <input
-              className="shorten-form-input"
-              placeholder="Shorten a link here..."
-              type="url"
-              id="dest"
-              name="dest"
-              value={dest}
-              onChange={changeDest}
-            />
+        <Formik
+          initialValues={{ dest: "" }}
+          validationSchema={CreateURLSchema}
+          onSubmit={async (values) => await handleCreateURL(values.dest)}
+        >
+          {({ errors, touched, isSubmitting }) => (
+            <Form className="shorten-form">
+              <div className="shorten-form-control">
+                <label
+                  htmlFor="dest"
+                  aria-hidden="false"
+                  className="shorten-form-label"
+                >
+                  Dest
+                </label>
+                <input
+                  className={
+                    errors.dest && touched.dest
+                      ? "shorten-form-input-error"
+                      : "shorten-form-input"
+                  }
+                  placeholder="Shorten a link here..."
+                  type="text"
+                  id="dest"
+                  name="dest"
+                  value={dest}
+                  onChange={changeDest}
+                />
+                {errors.dest && touched.dest && (
+                  <span className="input-error-msg">{errors.dest}</span>
+                )}
+              </div>
+              <button className="shorten-form-btn" disabled={isSubmitting}>
+                {isSubmitting ? "Shortening..." : "Shorten It!"}
+              </button>
+            </Form>
+          )}
+        </Formik>
+        <div className="urls-info-container">
+          <div className="urls-info">
+            <div className="urls-info-top-container">
+              <a className="urls-info-og-url">https://www.frontendmentor.io</a>
+            </div>
+            <div className="urls-info-bot-container">
+              <a className="urls-info-shortened-url">https://rel.ink/k4lKyk</a>
+              <button className="shorten-form-btn">Copy</button>
+            </div>
           </div>
-          <button className="shorten-form-btn">Shorten It!</button>
-        </form>
+          <div className="urls-info">
+            <div className="urls-info-top-container">
+              <a className="urls-info-og-url">
+                https://twitter.com/frontendmentor
+              </a>
+            </div>
+            <div className="urls-info-bot-container">
+              <a className="urls-info-shortened-url">https://rel.ink/gxOXp9</a>
+              <button className="shorten-form-btn">Copy</button>
+            </div>
+          </div>
+          <div className="urls-info">
+            <div className="urls-info-top-container">
+              <a className="urls-info-og-url">
+                https://www.reddit.com/r/FromSeries/comments/1if3rka/my_plan_to_capture_jasmine/
+              </a>
+            </div>
+            <div className="urls-info-bot-container">
+              <a className="urls-info-shortened-url">https://rel.ink/gob3X9</a>
+              <button className="shorten-form-btn">Copy</button>
+            </div>
+          </div>
+        </div>
       </section>
       <section className="features-container">
         <div className="features-heading-container">
