@@ -1,0 +1,36 @@
+.features-subheading {
+  font-size: 22px;
+  color: #34313d;
+}
+
+.features-text-small {
+  font-size: 15px;
+  line-height: 26px;
+  color: #9e9aa8;
+  font-weight: 500;
+}
+
+.features-info-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 32px;
+  padding-top: 64px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.features-icon-container {
+  background-color: #3a3054;
+  height: 88px;
+  width: 88px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -44px;
+  left: 50%;
+  transform: translateX(-50%);
+}

@@ -1,0 +1,23 @@
+.footer {
+  background-color: #232127;
+  padding: 54px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.footer-logo {
+  height: 28px;
+}
+
+.footer-social-container {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-social-icon {
+  color: #ffffff;
+  height: 24px;
+  width: 24px;
+}

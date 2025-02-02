@@ -5,31 +5,6 @@
   font-family: "Poppins", sans-serif;
 }
 
-.header {
-  /*
-  padding - if it doesn't look right then bottom should have its padding removed
-  */
-  padding: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text-logo {
-  height: 24px;
-}
-
-.header-mobile-menu-btn {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  background-color: transparent;
-}
-
-.mobile-menu-icon {
-  height: 24px;
-}
-
 .hero-img-container {
   padding: 0 24px;
   overflow-x: hidden;
@@ -164,43 +139,6 @@
   gap: 24px;
 }
 
-.urls-info {
-  width: 100%;
-  background-color: #ffffff;
-  padding: 16px 0;
-  border-radius: 8px;
-}
-
-.urls-info-top-container {
-  padding: 0 16px;
-  width: 100%;
-  border-bottom: 1px solid #eff1f7;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.urls-info-og-url {
-  font-size: 16px;
-  line-height: 36px;
-  letter-spacing: 0.12px;
-  color: #34313d;
-}
-
-.urls-info-bot-container {
-  padding: 0 16px;
-  width: 100%;
-  text-decoration: none;
-}
-
-.urls-info-shortened-url {
-  font-size: 16px;
-  line-height: 36px;
-  letter-spacing: 0.12px;
-  color: #2bd0d0;
-  text-decoration: none;
-}
-
 .shorten-form-btn {
   background-color: #2bd0d0;
   color: #ffffff;
@@ -318,55 +256,4 @@
   line-height: 48px;
   letter-spacing: -0.7px;
   font-weight: 700;
-}
-
-.footer {
-  background-color: #232127;
-  padding: 54px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-}
-
-.footer-logo {
-  height: 28px;
-}
-
-.footer-links-container {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 22px;
-}
-
-.footer-link-heading {
-  font-size: 16px;
-  letter-spacing: -0.25px;
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.inner-links-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-link {
-  font-size: 15px;
-  font-weight: 500;
-  color: #bfbfbf;
-  text-decoration: none;
-}
-
-.footer-social-container {
-  display: flex;
-  gap: 24px;
-}
-
-.footer-social-icon {
-  color: #ffffff;
-  height: 24px;
-  width: 24px;
 }

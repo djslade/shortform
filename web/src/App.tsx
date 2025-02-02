@@ -1,8 +1,15 @@
-import { useState } from "react";
 import "./App.css";
 import { FaGithub } from "react-icons/fa";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import {
+  AppButton,
+  FeatureCard,
+  Footer,
+  Header,
+  PrimaryLink,
+  URLInfo,
+} from "./components";
 
 const CreateURLSchema = Yup.object().shape({
   dest: Yup.string()
@@ -10,13 +17,25 @@ const CreateURLSchema = Yup.object().shape({
     .url("Please add a valid URL"),
 });
 
+const featuresData = [
+  {
+    iconsrc: "/icon-brand-recognition.svg",
+    subheading: "Brand Recognition",
+    text: "Boost your brand recognition with each click. Generic links don’t mean a thing. Branded links help instil confidence in your content.",
+  },
+  {
+    iconsrc: "/icon-detailed-records.svg",
+    subheading: "Detailed Records",
+    text: "Gain insights into who is clicking your links. Knowing when and where people engage with your content helps inform better decisions.",
+  },
+  {
+    iconsrc: "/icon-fully-customizable.svg",
+    subheading: "Fully Customizable",
+    text: "Improve brand awareness and content discoverability through customizable links, supercharging audience engagement.",
+  },
+];
+
 function App() {
-  const [dest, setDest] = useState<string>("");
-
-  const changeDest = (evt: any) => {
-    setDest(evt.target.value);
-  };
-
   const handleCreateURL = async (dest: string) => {
     try {
       const res = await fetch("", {
@@ -40,29 +59,22 @@ function App() {
 
   return (
     <>
-      <header className="header">
-        <a href="/">
-          <img src="/text-logo.svg" alt="Shortform" className="text-logo" />
-        </a>
-        <button className="header-mobile-menu-btn">
-          <img src="/mobile-menu-icon.svg" className="mobile-menu-icon" />
-        </button>
-      </header>
-      <div className="hero-img-container">
-        <img src="/hero-splash-bg.svg" className="hero-img" alt="" />
-      </div>
-      <div className="hero-container">
-        <div className="hero-text-container">
-          <h1 className="hero-heading">More than just shorter links</h1>
-          <h2 className="hero-subheading">
-            Build your brand’s recognition and get detailed insights on how your
-            links are performing.
-          </h2>
+      <Header />
+      <section className="hero-section">
+        <div className="hero-img-container">
+          <img src="/hero-splash-bg.svg" className="hero-img" alt="" />
         </div>
-        <a href="/" className="hero-btn">
-          Get Started
-        </a>
-      </div>
+        <div className="hero-container">
+          <div className="hero-text-container">
+            <h1 className="hero-heading">More than just shorter links</h1>
+            <h2 className="hero-subheading">
+              Build your brand’s recognition and get detailed insights on how
+              your links are performing.
+            </h2>
+          </div>
+          <PrimaryLink text="Get Started" href="/" />
+        </div>
+      </section>
       <section className="shorten-container">
         <Formik
           initialValues={{ dest: "" }}
@@ -79,7 +91,7 @@ function App() {
                 >
                   Dest
                 </label>
-                <input
+                <Field
                   className={
                     errors.dest && touched.dest
                       ? "shorten-form-input-error"
@@ -89,51 +101,31 @@ function App() {
                   type="text"
                   id="dest"
                   name="dest"
-                  value={dest}
-                  onChange={changeDest}
                 />
                 {errors.dest && touched.dest && (
                   <span className="input-error-msg">{errors.dest}</span>
                 )}
               </div>
-              <button className="shorten-form-btn" disabled={isSubmitting}>
-                {isSubmitting ? "Shortening..." : "Shorten It!"}
-              </button>
+              <AppButton
+                type="submit"
+                text={isSubmitting ? "Shortening..." : "Shorten It!"}
+              />
             </Form>
           )}
         </Formik>
         <div className="urls-info-container">
-          <div className="urls-info">
-            <div className="urls-info-top-container">
-              <a className="urls-info-og-url">https://www.frontendmentor.io</a>
-            </div>
-            <div className="urls-info-bot-container">
-              <a className="urls-info-shortened-url">https://rel.ink/k4lKyk</a>
-              <button className="shorten-form-btn">Copy</button>
-            </div>
-          </div>
-          <div className="urls-info">
-            <div className="urls-info-top-container">
-              <a className="urls-info-og-url">
-                https://twitter.com/frontendmentor
-              </a>
-            </div>
-            <div className="urls-info-bot-container">
-              <a className="urls-info-shortened-url">https://rel.ink/gxOXp9</a>
-              <button className="shorten-form-btn">Copy</button>
-            </div>
-          </div>
-          <div className="urls-info">
-            <div className="urls-info-top-container">
-              <a className="urls-info-og-url">
-                https://www.reddit.com/r/FromSeries/comments/1if3rka/my_plan_to_capture_jasmine/
-              </a>
-            </div>
-            <div className="urls-info-bot-container">
-              <a className="urls-info-shortened-url">https://rel.ink/gob3X9</a>
-              <button className="shorten-form-btn">Copy</button>
-            </div>
-          </div>
+          <URLInfo
+            ogURL="https://www.frontendmentor.io"
+            shortenedURL="https://rel.ink/k4lKyk"
+          />
+          <URLInfo
+            ogURL="https://twitter.com/frontendmentor"
+            shortenedURL="https://rel.ink/gxOXp9"
+          />
+          <URLInfo
+            ogURL="https://www.reddit.com/r/FromSeries/comments/1if3rka/my_plan_to_capture_jasmine/"
+            shortenedURL="https://rel.ink/gob3X9"
+          />
         </div>
       </section>
       <section className="features-container">
@@ -145,50 +137,14 @@ function App() {
           </h3>
         </div>
         <div className="features-cards-container">
-          <div className="features-info-container">
-            <div className="features-icon-container">
-              <img
-                src="/icon-brand-recognition.svg"
-                alt=""
-                className="features-icon"
-              />
-            </div>
-            <h2 className="features-subeading">Brand Recognition</h2>
-            <h3 className="features-text">
-              Boost your brand recognition with each click. Generic links don’t
-              mean a thing. Branded links help instil confidence in your
-              content.
-            </h3>
-          </div>
-          <div className="features-info-container">
-            <div className="features-icon-container">
-              <img
-                src="/icon-detailed-records.svg"
-                alt=""
-                className="features-icon"
-              />
-            </div>
-            <h2 className="features-subeading">Detailed Records</h2>
-            <h3 className="features-text-small">
-              Gain insights into who is clicking your links. Knowing when and
-              where people engage with your content helps inform better
-              decisions.
-            </h3>
-          </div>
-          <div className="features-info-container">
-            <div className="features-icon-container">
-              <img
-                src="/icon-fully-customizable.svg"
-                alt=""
-                className="features-icon"
-              />
-            </div>
-            <h2 className="features-subeading">Fully Customizable</h2>
-            <h3 className="features-text-small">
-              Improve brand awareness and content discoverability through
-              customizable links, supercharging audience engagement.
-            </h3>
-          </div>
+          {featuresData.map((feature) => (
+            <FeatureCard
+              key={feature.subheading}
+              iconsrc={feature.iconsrc}
+              subheading={feature.subheading}
+              text={feature.text}
+            />
+          ))}
         </div>
       </section>
       <section className="boost-container">
@@ -199,51 +155,7 @@ function App() {
           </a>
         </div>
       </section>
-      <footer className="footer">
-        <img
-          src="/text-logo-footer.svg"
-          alt="Shortform"
-          className="footer-logo"
-        />
-        <div className="footer-links-container">
-          <h3 className="footer-link-heading">Features</h3>
-          <div className="inner-links-container">
-            <a href="/" className="footer-link">
-              Link Shortening
-            </a>
-            <a href="/" className="footer-link">
-              Branded Links
-            </a>
-            <a href="/" className="footer-link">
-              Analytics
-            </a>
-          </div>
-        </div>
-        <div className="footer-links-container">
-          <h3 className="footer-link-heading">Resources</h3>
-          <div className="inner-links-container">
-            <a href="/" className="footer-link">
-              Developers
-            </a>
-          </div>
-        </div>
-        <div className="footer-links-container">
-          <h3 className="footer-link-heading">Other</h3>
-          <div className="inner-links-container">
-            <a href="/" className="footer-link">
-              About
-            </a>
-            <a href="/" className="footer-link">
-              Contact
-            </a>
-          </div>
-        </div>
-        <div className="footer-social-container">
-          <a href="/" className="footer-social">
-            <FaGithub className="footer-social-icon" />
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
