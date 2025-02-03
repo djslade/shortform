@@ -5,10 +5,11 @@
 @media (min-width: 900px) {
   .header-big {
     display: flex;
-    max-width: 1108px;
-    padding: 56px;
+    max-width: 1208px;
+    padding: 48px;
     align-items: center;
     justify-content: space-between;
+    margin: 0 auto;
   }
 
   .header-left {

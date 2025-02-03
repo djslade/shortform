@@ -5,9 +5,13 @@
   font-family: "Poppins", sans-serif;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 .hero-img-container {
   padding: 0 24px;
-  overflow-x: hidden;
 }
 
 .hero-container {
@@ -256,4 +260,40 @@
   line-height: 48px;
   letter-spacing: -0.7px;
   font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  .hero-section {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    width: 100%;
+    max-width: 1208px;
+  }
+
+  .hero-img-container {
+    width: 50%;
+  }
+
+  .hero-img {
+    width: 732px;
+  }
+
+  .hero-container {
+    padding: 0;
+    align-items: start;
+    padding: 0 48px;
+    width: 50%;
+  }
+
+  .hero-text-container {
+    text-align: left;
+  }
+
+  .hero-heading {
+    font-size: 56px;
+    line-height: 64px;
+    letter-spacing: -2px;
+  }
 }

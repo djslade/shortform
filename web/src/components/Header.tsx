@@ -4,7 +4,9 @@ export const Header = () => {
   return (
     <header className="header-big">
       <div className="header-left">
-        <img src="/text-logo.svg" alt="Shortform" />
+        <a href="/">
+          <img src="/text-logo.svg" alt="Shortform" />
+        </a>
         <nav className="header-nav">
           <a href="/" className="header-link">
             Features
