@@ -298,4 +298,41 @@ body {
     line-height: 64px;
     letter-spacing: -2px;
   }
+
+  .shorten-form {
+    padding: 56px;
+    background-image: url("/bg-shorten-desktop.svg");
+    background-size: cover;
+    flex-direction: row;
+    max-width: 1108px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .shorten-form-control {
+    gap: 8px;
+  }
+
+  .shorten-form-input {
+    height: 64px;
+    padding: 0 32px;
+    font-size: 20px;
+    line-height: 36px;
+    letter-spacing: 0.15px;
+  }
+
+  .shorten-form-input-error {
+    height: 64px;
+    padding: 0 32px;
+    font-size: 20px;
+    line-height: 36px;
+    letter-spacing: 0.15px;
+  }
+
+  .input-error-msg {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
+    letter-spacing: 0.08px;
+  }
 }
