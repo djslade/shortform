@@ -285,10 +285,12 @@ body {
     align-items: start;
     padding: 0 48px;
     width: 50%;
+    gap: 38px;
   }
 
   .hero-text-container {
     text-align: left;
+    gap: 5px;
   }
 
   .hero-heading {
