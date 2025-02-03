@@ -1,5 +1,4 @@
 import "./App.css";
-import { FaGithub } from "react-icons/fa";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import {
@@ -7,6 +6,7 @@ import {
   FeatureCard,
   Footer,
   Header,
+  HeaderMobile,
   PrimaryLink,
   URLInfo,
 } from "./components";
@@ -60,6 +60,7 @@ function App() {
   return (
     <>
       <Header />
+      <HeaderMobile />
       <section className="hero-section">
         <div className="hero-img-container">
           <img src="/hero-splash-bg.svg" className="hero-img" alt="" />

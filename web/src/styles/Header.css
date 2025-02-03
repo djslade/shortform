@@ -1,27 +1,52 @@
-.header {
-  /*
-  padding - if it doesn't look right then bottom should have its padding removed
-  */
-  padding: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  background-color: #ffffff;
+.header-big {
+  display: none;
 }
 
-.text-logo {
-  height: 24px;
-}
+@media (min-width: 900px) {
+  .header-big {
+    display: flex;
+    max-width: 1108px;
+    padding: 56px;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.header-mobile-menu-btn {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  background-color: transparent;
-}
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
 
-.mobile-menu-icon {
-  height: 24px;
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .header-link {
+    font-size: 15px;
+    color: #9e9aa8;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .header-primary-link {
+    width: 108px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 32px;
+    background-color: #2bd0d0;
+    color: #ffffff;
+    text-decoration: none;
+  }
 }
