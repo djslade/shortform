@@ -35,3 +35,40 @@
   color: #2bd0d0;
   text-decoration: none;
 }
+
+@media (min-width: 900px) {
+  .urls-info {
+    display: flex;
+    align-items: center;
+    padding: 18px 32px;
+    height: 72px;
+    justify-content: space-between;
+  }
+
+  .urls-info-top-container {
+    border-bottom: none;
+    padding: 0;
+    width: auto;
+    max-width: 50%;
+  }
+
+  .urls-info-bot-container {
+    padding: 0;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .urls-info-og-url {
+    font-size: 20px;
+    letter-spacing: 0.15px;
+    font-weight: 500;
+  }
+
+  .urls-info-shortened-url {
+    font-size: 20px;
+    letter-spacing: 0.15px;
+    font-weight: 500;
+  }
+}

@@ -77,56 +77,58 @@ function App() {
         </div>
       </section>
       <section className="shorten-container">
-        <Formik
-          initialValues={{ dest: "" }}
-          validationSchema={CreateURLSchema}
-          onSubmit={async (values) => await handleCreateURL(values.dest)}
-        >
-          {({ errors, touched, isSubmitting }) => (
-            <Form className="shorten-form">
-              <div className="shorten-form-control">
-                <label
-                  htmlFor="dest"
-                  aria-hidden="false"
-                  className="shorten-form-label"
-                >
-                  Dest
-                </label>
-                <Field
-                  className={
-                    errors.dest && touched.dest
-                      ? "shorten-form-input-error"
-                      : "shorten-form-input"
-                  }
-                  placeholder="Shorten a link here..."
-                  type="text"
-                  id="dest"
-                  name="dest"
+        <div className="shorten-inner-container">
+          <Formik
+            initialValues={{ dest: "" }}
+            validationSchema={CreateURLSchema}
+            onSubmit={async (values) => await handleCreateURL(values.dest)}
+          >
+            {({ errors, touched, isSubmitting }) => (
+              <Form className="shorten-form">
+                <div className="shorten-form-control">
+                  <label
+                    htmlFor="dest"
+                    aria-hidden="false"
+                    className="shorten-form-label"
+                  >
+                    Dest
+                  </label>
+                  <Field
+                    className={
+                      errors.dest && touched.dest
+                        ? "shorten-form-input-error"
+                        : "shorten-form-input"
+                    }
+                    placeholder="Shorten a link here..."
+                    type="text"
+                    id="dest"
+                    name="dest"
+                  />
+                  {errors.dest && touched.dest && (
+                    <span className="input-error-msg">{errors.dest}</span>
+                  )}
+                </div>
+                <AppButton
+                  type="submit"
+                  text={isSubmitting ? "Shortening..." : "Shorten It!"}
                 />
-                {errors.dest && touched.dest && (
-                  <span className="input-error-msg">{errors.dest}</span>
-                )}
-              </div>
-              <AppButton
-                type="submit"
-                text={isSubmitting ? "Shortening..." : "Shorten It!"}
-              />
-            </Form>
-          )}
-        </Formik>
-        <div className="urls-info-container">
-          <URLInfo
-            ogURL="https://www.frontendmentor.io"
-            shortenedURL="https://rel.ink/k4lKyk"
-          />
-          <URLInfo
-            ogURL="https://twitter.com/frontendmentor"
-            shortenedURL="https://rel.ink/gxOXp9"
-          />
-          <URLInfo
-            ogURL="https://www.reddit.com/r/FromSeries/comments/1if3rka/my_plan_to_capture_jasmine/"
-            shortenedURL="https://rel.ink/gob3X9"
-          />
+              </Form>
+            )}
+          </Formik>
+          <div className="urls-info-container">
+            <URLInfo
+              ogURL="https://www.frontendmentor.io"
+              shortenedURL="https://rel.ink/k4lKyk"
+            />
+            <URLInfo
+              ogURL="https://twitter.com/frontendmentor"
+              shortenedURL="https://rel.ink/gxOXp9"
+            />
+            <URLInfo
+              ogURL="https://www.reddit.com/r/FromSeries/comments/1if3rka/my_plan_to_capture_jasmine/"
+              shortenedURL="https://rel.ink/gob3X9"
+            />
+          </div>
         </div>
       </section>
       <section className="features-container">
