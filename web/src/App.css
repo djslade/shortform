@@ -346,4 +346,44 @@ body {
     line-height: 18px;
     letter-spacing: 0.08px;
   }
+
+  .features-container {
+    padding: 120px 32px;
+  }
+
+  .features-heading-container {
+    gap: 18px;
+    max-width: 540px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .features-heading {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -1px;
+    font-weight: 700;
+  }
+
+  .features-text {
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: 0.12px;
+  }
+
+  .features-cards-container {
+    flex-direction: row;
+    max-width: 1208px;
+    margin: 0 auto;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent calc(50% - 4px),
+      #2bd0d0 calc(50% - 4px),
+      #2bd0d0 calc(50% + 4px),
+      transparent calc(50% + 4px),
+      transparent 100%
+    );
+    gap: 30px;
+  }
 }

@@ -34,3 +34,24 @@
   left: 50%;
   transform: translateX(-50%);
 }
+
+@media (min-width: 900px) {
+  .features-info-container {
+    text-align: start;
+    height: fit-content;
+    width: 100%;
+  }
+
+  .features-info-container:nth-child(2) {
+    margin-top: 48px;
+  }
+
+  .features-info-container:nth-child(3) {
+    margin-top: 96px;
+  }
+
+  .features-icon-container {
+    transform: unset;
+    left: 32px;
+  }
+}

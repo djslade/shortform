@@ -1,3 +1,5 @@
+import "../styles/FeatureCard.css";
+
 interface FeatureCardProps {
   iconsrc: string;
   subheading: string;
@@ -15,7 +17,7 @@ export const FeatureCard = ({
         <img src={iconsrc} alt={subheading} className="features-icon" />
       </div>
       <h2 className="features-subeading">{subheading}</h2>
-      <h3 className="features-text-small">{text}</h3>
+      <p className="features-text-small">{text}</p>
     </div>
   );
 };
