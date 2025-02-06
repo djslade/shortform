@@ -386,4 +386,18 @@ body {
     );
     gap: 30px;
   }
+
+  .boost-container {
+    background-image: url("/bg-boost-desktop.svg");
+  }
+
+  .boost-cta-container {
+    gap: 32px;
+  }
+
+  .boost-cta-heading {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -1px;
+  }
 }
