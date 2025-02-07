@@ -24,3 +24,7 @@
   color: #bfbfbf;
   text-decoration: none;
 }
+
+.footer-link:hover {
+  color: #2bd0d0;
+}

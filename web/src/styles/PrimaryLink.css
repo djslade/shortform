@@ -12,3 +12,7 @@
   color: #ffffff;
   text-decoration: none;
 }
+
+.primary-link:hover {
+  background-color: #9ae3e3;
+}

@@ -31,6 +31,10 @@
     text-decoration: none;
   }
 
+  .header-link:hover {
+    color: #34313d;
+  }
+
   .header-right {
     display: flex;
     align-items: center;
