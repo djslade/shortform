@@ -58,6 +58,12 @@ body {
   background-color: #2bd0d0;
   color: #ffffff;
   text-decoration: none;
+  transition-property: all;
+  transition-duration: 0.2s;
+}
+
+.hero-btn:hover {
+  background-color: #9ae3e3;
 }
 
 .shorten-container {
