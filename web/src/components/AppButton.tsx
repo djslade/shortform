@@ -18,7 +18,7 @@ export const AppButton = ({
   if (variant == "small") {
     return (
       <button
-        className={`app-btn-small ${tinted ? "app-btn-tint" : ""}`}
+        className={`app-btn btn-small ${tinted ? "app-btn-tint" : ""}`}
         type={type}
         onClick={onClick}
       >

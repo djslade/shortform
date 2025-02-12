@@ -34,6 +34,7 @@ export const URLInfo = ({ ogURL, shortenedURL }: URLInfoProps) => {
         <AppButton
           text={copied ? "Copied!" : "Copy"}
           type="button"
+          variant="small"
           tinted={copied}
           onClick={handleCopy}
         />
