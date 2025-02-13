@@ -22,6 +22,11 @@
   text-decoration: none;
 }
 
+.urls-info-og-url:hover,
+.urls-info-shortened-url:hover {
+  text-decoration: underline;
+}
+
 .urls-info-bot-container {
   padding: 0 16px;
   width: 100%;
