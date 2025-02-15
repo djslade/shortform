@@ -10,6 +10,9 @@ import {
   PrimaryLink,
   URLInfo,
 } from "./components";
+import { useEffect } from "react";
+import { useAtom } from "jotai";
+import { urlsAtom } from "./state";
 
 const CreateURLSchema = Yup.object().shape({
   dest: Yup.string()
@@ -36,6 +39,8 @@ const featuresData = [
 ];
 
 function App() {
+  const [URLs, setURLs] = useAtom(urlsAtom)
+
   const handleCreateURL = async (dest: string) => {
     try {
       const res = await fetch("", {
@@ -51,11 +56,22 @@ function App() {
       if (res.status !== 201) {
         throw new Error(data.message);
       }
+      const newURL = {
+        id: data.url.id,
+        src: data.url.dest,
+      }
     } catch (err) {
       // TODO: Handle errors
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    // Retrieve URLs from local storage
+    const storedURLs = localStorage.getItem("shortform_urls")
+    if (!storedURLs) return;
+    setURLs(JSON.parse(storedURLs))
+  }, [])
 
   return (
     <>

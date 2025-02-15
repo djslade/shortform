@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/Fenroe/shortform/internal/database"
 )
@@ -20,9 +19,8 @@ func TestHandlerCreateURL(t *testing.T) {
 	_, err := queries.CreateURL(
 		context.Background(),
 		database.CreateURLParams{
-			ID:        "repeat",
-			ExpiredAt: time.Now().Add(time.Hour * 24),
-			Dest:      "https://www.google.com/",
+			ID:   "repeat",
+			Dest: "https://www.google.com/",
 		},
 	)
 	if err != nil {
@@ -52,9 +50,8 @@ func TestHandlerCreateURL(t *testing.T) {
 		{
 			Name: "Happy path",
 			Input: testInput{
-				ID:        "happy-path",
-				ExpiredAt: time.Now().Add(time.Hour).Unix(),
-				Dest:      "https://www.example.com",
+				ID:   "happy-path",
+				Dest: "https://www.example.com",
 			},
 			Output: testOutput{
 				Code:    http.StatusCreated,
@@ -64,8 +61,7 @@ func TestHandlerCreateURL(t *testing.T) {
 		{
 			Name: "No ID",
 			Input: testInput{
-				ExpiredAt: time.Now().Add(time.Hour).Unix(),
-				Dest:      "https://www.example.com",
+				Dest: "https://www.example.com",
 			},
 			Output: testOutput{
 				Code:    http.StatusCreated,
@@ -86,8 +82,7 @@ func TestHandlerCreateURL(t *testing.T) {
 		{
 			Name: "No Dest",
 			Input: testInput{
-				ID:        "no-dest",
-				ExpiredAt: time.Now().Add(time.Hour).Unix(),
+				ID: "no-dest",
 			},
 			Output: testOutput{
 				Code:    http.StatusBadRequest,
@@ -97,9 +92,8 @@ func TestHandlerCreateURL(t *testing.T) {
 		{
 			Name: "Repeat",
 			Input: testInput{
-				ID:        "repeat",
-				ExpiredAt: time.Now().Add(time.Hour).Unix(),
-				Dest:      "https://www.example.com",
+				ID:   "repeat",
+				Dest: "https://www.example.com",
 			},
 			Output: testOutput{
 				Code:    http.StatusBadRequest,
@@ -109,9 +103,8 @@ func TestHandlerCreateURL(t *testing.T) {
 		{
 			Name: "Invalid Dest",
 			Input: testInput{
-				ID:        "invalid-dest",
-				ExpiredAt: time.Now().Add(time.Hour).Unix(),
-				Dest:      "example.com",
+				ID:   "invalid-dest",
+				Dest: "example.com",
 			},
 			Output: testOutput{
 				Code:    http.StatusBadRequest,
@@ -128,10 +121,6 @@ func TestHandlerCreateURL(t *testing.T) {
 		}
 		if c.Input.ID != "" {
 			body.ID = &c.Input.ID
-
-		}
-		if c.Input.ExpiredAt != 0 {
-			body.ExpiredAt = &c.Input.ExpiredAt
 
 		}
 		data, err := json.Marshal(body)

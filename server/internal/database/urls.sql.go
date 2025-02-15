@@ -7,7 +7,6 @@ package database
 
 import (
 	"context"
-	"time"
 )
 
 const checkForURLWithID = `-- name: CheckForURLWithID :one
@@ -22,38 +21,37 @@ func (q *Queries) CheckForURLWithID(ctx context.Context, id string) (int64, erro
 }
 
 const createURL = `-- name: CreateURL :one
-INSERT INTO urls (id, created_at, updated_at, expired_at, dest)
+INSERT INTO urls (id, created_at, updated_at, disabled_at, dest)
 VALUES (
     $1,
     NOW(),
     NOW(),
-    $2,
-    $3
+    NULL,
+    $2
 )
-RETURNING id, dest, created_at, updated_at, expired_at
+RETURNING id, dest, created_at, updated_at, disabled_at
 `
 
 type CreateURLParams struct {
-	ID        string
-	ExpiredAt time.Time
-	Dest      string
+	ID   string
+	Dest string
 }
 
 func (q *Queries) CreateURL(ctx context.Context, arg CreateURLParams) (Url, error) {
-	row := q.db.QueryRowContext(ctx, createURL, arg.ID, arg.ExpiredAt, arg.Dest)
+	row := q.db.QueryRowContext(ctx, createURL, arg.ID, arg.Dest)
 	var i Url
 	err := row.Scan(
 		&i.ID,
 		&i.Dest,
 		&i.CreatedAt,
 		&i.UpdatedAt,
-		&i.ExpiredAt,
+		&i.DisabledAt,
 	)
 	return i, err
 }
 
 const getURLByID = `-- name: GetURLByID :one
-SELECT id, dest, created_at, updated_at, expired_at FROM urls WHERE id=$1
+SELECT id, dest, created_at, updated_at, disabled_at FROM urls WHERE id=$1
 `
 
 func (q *Queries) GetURLByID(ctx context.Context, id string) (Url, error) {
@@ -64,7 +62,7 @@ func (q *Queries) GetURLByID(ctx context.Context, id string) (Url, error) {
 		&i.Dest,
 		&i.CreatedAt,
 		&i.UpdatedAt,
-		&i.ExpiredAt,
+		&i.DisabledAt,
 	)
 	return i, err
 }

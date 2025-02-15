@@ -24,8 +24,8 @@ func (cfg *apiConfig) handlerRedirect(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusNotFound, "URL not found", nil)
 		return
 	}
-	// Check if url expired
-	if url.ExpiredAt.Unix() <= time.Now().Unix() {
+	// Check if url is disabled
+	if url.DisabledAt.Time.Unix() <= time.Now().Unix() {
 		// TODO: Bad request
 		respondWithError(w, http.StatusBadRequest, "URL has expired", nil)
 		return
