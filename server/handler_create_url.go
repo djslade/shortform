@@ -82,8 +82,8 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 	url, err := cfg.DB.CreateURL(
 		context.Background(),
 		database.CreateURLParams{
-			ID:   *body.ID,
-			Dest: *body.Dest,
+			ID:          *body.ID,
+			Destination: *body.Dest,
 		},
 	)
 	if err != nil {
@@ -92,7 +92,7 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 	}
 	var res createURLResponse
 	res.Message = "URL created successfully"
-	res.URL.Dest = url.Dest
+	res.URL.Dest = url.Destination
 	res.URL.ID = url.ID
 	respondWithJSON(w, http.StatusCreated, res)
 }

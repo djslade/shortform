@@ -25,14 +25,14 @@ func (cfg *apiConfig) handlerRedirect(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Check if url is disabled
-	if url.DisabledAt.Time.Unix() <= time.Now().Unix() {
+	if url.ExpiredAt.Time.Unix() <= time.Now().Unix() {
 		// TODO: Bad request
 		respondWithError(w, http.StatusBadRequest, "URL has expired", nil)
 		return
 	}
 	var res redirectResponse
 	res.Message = "Redirect to supplied URL"
-	res.Redirect = url.Dest
+	res.Redirect = url.Destination
 	// Redirect
 	respondWithJSON(w, http.StatusFound, res)
 }

@@ -7,12 +7,41 @@ package database
 import (
 	"database/sql"
 	"time"
+
+	"github.com/google/uuid"
 )
 
+type Click struct {
+	ID          uuid.UUID
+	UrlID       sql.NullString
+	CreatedAt   time.Time
+	Continent   sql.NullString
+	Country     sql.NullString
+	Region      sql.NullString
+	City        sql.NullString
+	Lat         sql.NullFloat64
+	Lon         sql.NullFloat64
+	Timezone    sql.NullString
+	Currency    sql.NullString
+	ReferralUrl sql.NullString
+	Device      sql.NullString
+	IsProxy     sql.NullBool
+	Isp         sql.NullString
+}
+
 type Url struct {
-	ID         string
-	Dest       string
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DisabledAt sql.NullTime
+	ID          string
+	Destination string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	ExpiredAt   sql.NullTime
+	UserID      uuid.NullUUID
+}
+
+type User struct {
+	ID           uuid.UUID
+	Email        string
+	PasswordHash sql.NullString
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }

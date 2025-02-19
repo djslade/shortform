@@ -19,8 +19,8 @@ func TestHandlerCreateURL(t *testing.T) {
 	_, err := queries.CreateURL(
 		context.Background(),
 		database.CreateURLParams{
-			ID:   "repeat",
-			Dest: "https://www.google.com/",
+			ID:          "repeat",
+			Destination: "https://www.google.com/",
 		},
 	)
 	if err != nil {

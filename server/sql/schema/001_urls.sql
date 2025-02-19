@@ -1,10 +1,10 @@
 -- +goose Up
 CREATE TABLE urls (
     id TEXT PRIMARY KEY,
-    dest TEXT NOT NULL,
+    destination TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
-    disabled_at TIMESTAMP
+    expired_at TIMESTAMP
 );
 
 -- +goose Down

@@ -7,6 +7,9 @@ package database
 
 import (
 	"context"
+	"database/sql"
+
+	"github.com/google/uuid"
 )
 
 const checkForURLWithID = `-- name: CheckForURLWithID :one
@@ -21,37 +24,55 @@ func (q *Queries) CheckForURLWithID(ctx context.Context, id string) (int64, erro
 }
 
 const createURL = `-- name: CreateURL :one
-INSERT INTO urls (id, created_at, updated_at, disabled_at, dest)
+INSERT INTO urls (id, user_id, created_at, updated_at, expired_at, destination)
 VALUES (
     $1,
+    $2,
     NOW(),
     NOW(),
-    NULL,
-    $2
+    $3,
+    $4
 )
-RETURNING id, dest, created_at, updated_at, disabled_at
+RETURNING id, destination, created_at, updated_at, expired_at, user_id
 `
 
 type CreateURLParams struct {
-	ID   string
-	Dest string
+	ID          string
+	UserID      uuid.NullUUID
+	ExpiredAt   sql.NullTime
+	Destination string
 }
 
 func (q *Queries) CreateURL(ctx context.Context, arg CreateURLParams) (Url, error) {
-	row := q.db.QueryRowContext(ctx, createURL, arg.ID, arg.Dest)
+	row := q.db.QueryRowContext(ctx, createURL,
+		arg.ID,
+		arg.UserID,
+		arg.ExpiredAt,
+		arg.Destination,
+	)
 	var i Url
 	err := row.Scan(
 		&i.ID,
-		&i.Dest,
+		&i.Destination,
 		&i.CreatedAt,
 		&i.UpdatedAt,
-		&i.DisabledAt,
+		&i.ExpiredAt,
+		&i.UserID,
 	)
 	return i, err
 }
 
+const deleteURL = `-- name: DeleteURL :exec
+DELETE FROM urls WHERE id=$1
+`
+
+func (q *Queries) DeleteURL(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteURL, id)
+	return err
+}
+
 const getURLByID = `-- name: GetURLByID :one
-SELECT id, dest, created_at, updated_at, disabled_at FROM urls WHERE id=$1
+SELECT id, destination, created_at, updated_at, expired_at, user_id FROM urls WHERE id=$1
 `
 
 func (q *Queries) GetURLByID(ctx context.Context, id string) (Url, error) {
@@ -59,10 +80,111 @@ func (q *Queries) GetURLByID(ctx context.Context, id string) (Url, error) {
 	var i Url
 	err := row.Scan(
 		&i.ID,
-		&i.Dest,
+		&i.Destination,
 		&i.CreatedAt,
 		&i.UpdatedAt,
-		&i.DisabledAt,
+		&i.ExpiredAt,
+		&i.UserID,
+	)
+	return i, err
+}
+
+const getURLsByDestination = `-- name: GetURLsByDestination :many
+SELECT id, destination, created_at, updated_at, expired_at, user_id FROM urls WHERE user_id=$1 AND destination=$2
+`
+
+type GetURLsByDestinationParams struct {
+	UserID      uuid.NullUUID
+	Destination string
+}
+
+func (q *Queries) GetURLsByDestination(ctx context.Context, arg GetURLsByDestinationParams) ([]Url, error) {
+	rows, err := q.db.QueryContext(ctx, getURLsByDestination, arg.UserID, arg.Destination)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Url
+	for rows.Next() {
+		var i Url
+		if err := rows.Scan(
+			&i.ID,
+			&i.Destination,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.ExpiredAt,
+			&i.UserID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getURLsByUserID = `-- name: GetURLsByUserID :many
+SELECT id, destination, created_at, updated_at, expired_at, user_id FROM urls WHERE user_id=$1
+`
+
+func (q *Queries) GetURLsByUserID(ctx context.Context, userID uuid.NullUUID) ([]Url, error) {
+	rows, err := q.db.QueryContext(ctx, getURLsByUserID, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Url
+	for rows.Next() {
+		var i Url
+		if err := rows.Scan(
+			&i.ID,
+			&i.Destination,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.ExpiredAt,
+			&i.UserID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateURL = `-- name: UpdateURL :one
+UPDATE urls 
+SET expired_at=$1,destination=$2,updated_at=NOW() 
+WHERE id=$3
+RETURNING id, destination, created_at, updated_at, expired_at, user_id
+`
+
+type UpdateURLParams struct {
+	ExpiredAt   sql.NullTime
+	Destination string
+	ID          string
+}
+
+func (q *Queries) UpdateURL(ctx context.Context, arg UpdateURLParams) (Url, error) {
+	row := q.db.QueryRowContext(ctx, updateURL, arg.ExpiredAt, arg.Destination, arg.ID)
+	var i Url
+	err := row.Scan(
+		&i.ID,
+		&i.Destination,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ExpiredAt,
+		&i.UserID,
 	)
 	return i, err
 }
