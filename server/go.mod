@@ -23,10 +23,12 @@ require (
 	github.com/opencontainers/runc v1.2.4 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	golang.org/x/net v0.34.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 )
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/ory/dockertest v3.3.5+incompatible
 	github.com/pkg/errors v0.9.1 // indirect
+	golang.org/x/crypto v0.33.0
 )
