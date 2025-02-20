@@ -9,17 +9,13 @@ import (
 	"github.com/Fenroe/shortform/internal/database"
 )
 
-/*
-Exposed for use in testing
-*/
+// Exposed for use in testing
 type createURLParams struct {
 	ID   *string `json:"id"`
 	Dest *string `json:"dest"`
 }
 
-/*
-Exposed for use in testing
-*/
+// Exposed for use in testing
 type createURLResponse struct {
 	Message string `json:"message"`
 	URL     struct {

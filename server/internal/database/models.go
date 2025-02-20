@@ -29,6 +29,14 @@ type Click struct {
 	Isp         sql.NullString
 }
 
+type RefreshToken struct {
+	Token     string
+	UserID    uuid.UUID
+	Provider  string
+	CreatedAt time.Time
+	ExpiredAt time.Time
+}
+
 type Url struct {
 	ID          string
 	Destination string
