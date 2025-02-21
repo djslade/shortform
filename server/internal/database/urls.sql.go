@@ -126,6 +126,17 @@ func (q *Queries) GetURLsByAPIKey(ctx context.Context, keyID sql.NullString) ([]
 	return items, nil
 }
 
+const getURLsByAPIKeyCount = `-- name: GetURLsByAPIKeyCount :one
+SELECT COUNT(*) FROM urls WHERE key_id=$1
+`
+
+func (q *Queries) GetURLsByAPIKeyCount(ctx context.Context, keyID sql.NullString) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getURLsByAPIKeyCount, keyID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const getURLsByDestination = `-- name: GetURLsByDestination :many
 SELECT id, destination, created_at, updated_at, expired_at, user_id, key_id FROM urls WHERE user_id=$1 AND destination=$2
 `
@@ -202,9 +213,7 @@ func (q *Queries) GetURLsByUserID(ctx context.Context, userID uuid.NullUUID) ([]
 }
 
 const updateURL = `-- name: UpdateURL :exec
-UPDATE urls 
-SET expired_at=$1,destination=$2,updated_at=NOW() 
-WHERE id=$3
+UPDATE urls SET expired_at=$1,destination=$2,updated_at=NOW() WHERE id=$3
 `
 
 type UpdateURLParams struct {
@@ -219,9 +228,7 @@ func (q *Queries) UpdateURL(ctx context.Context, arg UpdateURLParams) error {
 }
 
 const updateURLsWithUserID = `-- name: UpdateURLsWithUserID :exec
-UPDATE urls
-SET user_id=$1,key_id=NULL,updated_at=NOW()
-WHERE key_id=$2
+UPDATE urls SET user_id=$1,key_id=NULL,updated_at=NOW() WHERE key_id=$2
 `
 
 type UpdateURLsWithUserIDParams struct {

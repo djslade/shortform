@@ -2,37 +2,25 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
-	"time"
 )
 
-type redirectResponse struct {
-	Message  string `json:"message"`
-	Redirect string `json:"redirect"`
-}
-
 func (cfg *apiConfig) handlerRedirect(w http.ResponseWriter, r *http.Request) {
-	urlID := r.URL.Query().Get("url")
-	if urlID == "" {
-		// TODO: Bad request
-		respondWithError(w, http.StatusBadRequest, "URL query parameter is missing", nil)
+	type parameters struct {
+		URLID *string `json:"url_id"`
+	}
+
+	var body parameters
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
 		return
 	}
-	url, err := cfg.db.GetURLByID(context.Background(), urlID)
+
+	url, err := cfg.db.GetURLByID(context.Background(), *body.URLID)
 	if err != nil {
-		// TODO: Not found
-		respondWithError(w, http.StatusNotFound, "URL not found", nil)
-		return
+		respondWithError(w, http.StatusNotFound, "URL was not found", err)
 	}
-	// Check if url is disabled
-	if url.ExpiredAt.Time.Unix() <= time.Now().Unix() {
-		// TODO: Bad request
-		respondWithError(w, http.StatusBadRequest, "URL has expired", nil)
-		return
-	}
-	var res redirectResponse
-	res.Message = "Redirect to supplied URL"
-	res.Redirect = url.Destination
-	// Redirect
-	respondWithJSON(w, http.StatusFound, res)
+	http.Redirect(w, r, url.Destination, http.StatusFound)
+	go func() {}()
 }

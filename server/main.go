@@ -51,9 +51,16 @@ func main() {
 	// Handler
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /url", config.handlerURL)
-	mux.HandleFunc("GET /redirect", config.handlerRedirect)
-	mux.HandleFunc("POST /url", config.handlerCreateURL)
+	mux.HandleFunc("GET /api/url-key", config.handlerGetURLsWithKey)
+	mux.HandleFunc("GET /api/url-auth", config.handlerGetURLsAsUser)
+	mux.HandleFunc("POST /api/url-key", config.handlerCreateURLWithKey)
+	mux.HandleFunc("POST /api/url-auth", config.handlerCreateURLAsUser)
+
+	mux.HandleFunc("POST /api/users", config.handlerCreateUser)
+
+	mux.HandleFunc("POST /api/login", config.handlerLogin)
+	mux.HandleFunc("POST /api/refresh", config.handlerRefresh)
+	mux.HandleFunc("DELETE /api/revoke", config.handlerRevoke)
 
 	// Server
 	server := http.Server{

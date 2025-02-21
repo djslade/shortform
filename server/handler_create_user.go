@@ -10,7 +10,7 @@ import (
 	"github.com/Fenroe/shortform/internal/database"
 )
 
-func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
+func (cfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Password *string `json:"password"`
 		Email    *string `json:"email"`

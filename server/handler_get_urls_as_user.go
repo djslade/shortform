@@ -6,10 +6,9 @@ import (
 	"github.com/Fenroe/shortform/internal/database"
 )
 
-func handlerGetURLSAsUser(w http.ResponseWriter, r *http.Request) {
+func (cfg *apiConfig) handlerGetURLsAsUser(w http.ResponseWriter, r *http.Request) {
 	type response struct {
 		URLs []database.Url
 	}
 
-	wi
 }
