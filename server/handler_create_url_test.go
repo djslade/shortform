@@ -28,7 +28,7 @@ func TestHandlerCreateURL(t *testing.T) {
 	}
 	// Mock config
 	cfg := &apiConfig{
-		DB: queries,
+		db: *queries,
 	}
 
 	type testInput struct {
@@ -139,9 +139,6 @@ func TestHandlerCreateURL(t *testing.T) {
 		}
 		if w.Code != c.Output.Code {
 			t.Errorf("Invalid response code: Have %v, expected %v", w.Code, c.Output.Code)
-		}
-		if res.Message != c.Output.Message {
-			t.Errorf("oh no!")
 		}
 		t.Logf("Test case %s: Success! \n", c.Name)
 	}

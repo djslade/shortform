@@ -22,11 +22,14 @@ SELECT * FROM urls WHERE user_id=$1;
 -- name: GetURLsByDestination :many
 SELECT * FROM urls WHERE user_id=$1 AND destination=$2;
 
--- name: UpdateURL :one
-UPDATE urls 
-SET expired_at=$1,destination=$2,updated_at=NOW() 
-WHERE id=$3
-RETURNING *;
+-- name: GetURLsByAPIKey :many
+SELECT * FROM urls WHERE key_id=$1;
+
+-- name: UpdateURL :exec
+UPDATE urls SET expired_at=$1,destination=$2,updated_at=NOW() WHERE id=$3;
+
+-- name: UpdateURLsWithUserID :exec
+UPDATE urls SET user_id=$1,key_id=NULL,updated_at=NOW() WHERE key_id=$2;
 
 -- name: DeleteURL :exec
 DELETE FROM urls WHERE id=$1;

@@ -17,8 +17,7 @@ type createURLParams struct {
 
 // Exposed for use in testing
 type createURLResponse struct {
-	Message string `json:"message"`
-	URL     struct {
+	URL struct {
 		ID   string `json:"id"`
 		Dest string `json:"dest"`
 	} `json:"url"`
@@ -41,7 +40,7 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 				respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
 				return
 			}
-			count, err := cfg.DB.CheckForURLWithID(context.Background(), randomID)
+			count, err := cfg.db.CheckForURLWithID(context.Background(), randomID)
 			if err != nil {
 				respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
 				return
@@ -53,7 +52,7 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		count, err := cfg.DB.CheckForURLWithID(context.Background(), *body.ID)
+		count, err := cfg.db.CheckForURLWithID(context.Background(), *body.ID)
 		if err != nil {
 			respondWithError(w, http.StatusInternalServerError, "The server encountered an error", err)
 			return
@@ -75,7 +74,7 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	url, err := cfg.DB.CreateURL(
+	url, err := cfg.db.CreateURL(
 		context.Background(),
 		database.CreateURLParams{
 			ID:          *body.ID,
@@ -87,7 +86,6 @@ func (cfg *apiConfig) handlerCreateURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var res createURLResponse
-	res.Message = "URL created successfully"
 	res.URL.Dest = url.Destination
 	res.URL.ID = url.ID
 	respondWithJSON(w, http.StatusCreated, res)

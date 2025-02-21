@@ -13,7 +13,7 @@ func (cfg *apiConfig) handlerURL(w http.ResponseWriter, r *http.Request) {
 		// TODO: Handle invalid request
 		return
 	}
-	url, err := cfg.DB.GetURLByID(context.Background(), queryURL)
+	url, err := cfg.db.GetURLByID(context.Background(), queryURL)
 	if err != nil {
 		// TODO: Handle server error
 		return

@@ -111,22 +111,13 @@ func (q *Queries) GetUserFromRefreshToken(ctx context.Context, token string) (Us
 	return i, err
 }
 
-const updateUser = `-- name: UpdateUser :one
+const updateUser = `-- name: UpdateUser :exec
 UPDATE users 
 SET password_hash=$1,updated_at=NOW() 
 WHERE id=$1
-RETURNING id, email, password_hash, created_at, updated_at
 `
 
-func (q *Queries) UpdateUser(ctx context.Context, passwordHash sql.NullString) (User, error) {
-	row := q.db.QueryRowContext(ctx, updateUser, passwordHash)
-	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Email,
-		&i.PasswordHash,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
+func (q *Queries) UpdateUser(ctx context.Context, passwordHash sql.NullString) error {
+	_, err := q.db.ExecContext(ctx, updateUser, passwordHash)
+	return err
 }

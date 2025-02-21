@@ -33,7 +33,7 @@ VALUES (
     $3,
     $4
 )
-RETURNING id, destination, created_at, updated_at, expired_at, user_id
+RETURNING id, destination, created_at, updated_at, expired_at, user_id, key_id
 `
 
 type CreateURLParams struct {
@@ -58,6 +58,7 @@ func (q *Queries) CreateURL(ctx context.Context, arg CreateURLParams) (Url, erro
 		&i.UpdatedAt,
 		&i.ExpiredAt,
 		&i.UserID,
+		&i.KeyID,
 	)
 	return i, err
 }
@@ -72,7 +73,7 @@ func (q *Queries) DeleteURL(ctx context.Context, id string) error {
 }
 
 const getURLByID = `-- name: GetURLByID :one
-SELECT id, destination, created_at, updated_at, expired_at, user_id FROM urls WHERE id=$1
+SELECT id, destination, created_at, updated_at, expired_at, user_id, key_id FROM urls WHERE id=$1
 `
 
 func (q *Queries) GetURLByID(ctx context.Context, id string) (Url, error) {
@@ -85,12 +86,48 @@ func (q *Queries) GetURLByID(ctx context.Context, id string) (Url, error) {
 		&i.UpdatedAt,
 		&i.ExpiredAt,
 		&i.UserID,
+		&i.KeyID,
 	)
 	return i, err
 }
 
+const getURLsByAPIKey = `-- name: GetURLsByAPIKey :many
+SELECT id, destination, created_at, updated_at, expired_at, user_id, key_id FROM urls WHERE key_id=$1
+`
+
+func (q *Queries) GetURLsByAPIKey(ctx context.Context, keyID sql.NullString) ([]Url, error) {
+	rows, err := q.db.QueryContext(ctx, getURLsByAPIKey, keyID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Url
+	for rows.Next() {
+		var i Url
+		if err := rows.Scan(
+			&i.ID,
+			&i.Destination,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.ExpiredAt,
+			&i.UserID,
+			&i.KeyID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getURLsByDestination = `-- name: GetURLsByDestination :many
-SELECT id, destination, created_at, updated_at, expired_at, user_id FROM urls WHERE user_id=$1 AND destination=$2
+SELECT id, destination, created_at, updated_at, expired_at, user_id, key_id FROM urls WHERE user_id=$1 AND destination=$2
 `
 
 type GetURLsByDestinationParams struct {
@@ -114,6 +151,7 @@ func (q *Queries) GetURLsByDestination(ctx context.Context, arg GetURLsByDestina
 			&i.UpdatedAt,
 			&i.ExpiredAt,
 			&i.UserID,
+			&i.KeyID,
 		); err != nil {
 			return nil, err
 		}
@@ -129,7 +167,7 @@ func (q *Queries) GetURLsByDestination(ctx context.Context, arg GetURLsByDestina
 }
 
 const getURLsByUserID = `-- name: GetURLsByUserID :many
-SELECT id, destination, created_at, updated_at, expired_at, user_id FROM urls WHERE user_id=$1
+SELECT id, destination, created_at, updated_at, expired_at, user_id, key_id FROM urls WHERE user_id=$1
 `
 
 func (q *Queries) GetURLsByUserID(ctx context.Context, userID uuid.NullUUID) ([]Url, error) {
@@ -148,6 +186,7 @@ func (q *Queries) GetURLsByUserID(ctx context.Context, userID uuid.NullUUID) ([]
 			&i.UpdatedAt,
 			&i.ExpiredAt,
 			&i.UserID,
+			&i.KeyID,
 		); err != nil {
 			return nil, err
 		}
@@ -162,11 +201,10 @@ func (q *Queries) GetURLsByUserID(ctx context.Context, userID uuid.NullUUID) ([]
 	return items, nil
 }
 
-const updateURL = `-- name: UpdateURL :one
+const updateURL = `-- name: UpdateURL :exec
 UPDATE urls 
 SET expired_at=$1,destination=$2,updated_at=NOW() 
 WHERE id=$3
-RETURNING id, destination, created_at, updated_at, expired_at, user_id
 `
 
 type UpdateURLParams struct {
@@ -175,16 +213,23 @@ type UpdateURLParams struct {
 	ID          string
 }
 
-func (q *Queries) UpdateURL(ctx context.Context, arg UpdateURLParams) (Url, error) {
-	row := q.db.QueryRowContext(ctx, updateURL, arg.ExpiredAt, arg.Destination, arg.ID)
-	var i Url
-	err := row.Scan(
-		&i.ID,
-		&i.Destination,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-		&i.ExpiredAt,
-		&i.UserID,
-	)
-	return i, err
+func (q *Queries) UpdateURL(ctx context.Context, arg UpdateURLParams) error {
+	_, err := q.db.ExecContext(ctx, updateURL, arg.ExpiredAt, arg.Destination, arg.ID)
+	return err
+}
+
+const updateURLsWithUserID = `-- name: UpdateURLsWithUserID :exec
+UPDATE urls
+SET user_id=$1,key_id=NULL,updated_at=NOW()
+WHERE key_id=$2
+`
+
+type UpdateURLsWithUserIDParams struct {
+	UserID uuid.NullUUID
+	KeyID  sql.NullString
+}
+
+func (q *Queries) UpdateURLsWithUserID(ctx context.Context, arg UpdateURLsWithUserIDParams) error {
+	_, err := q.db.ExecContext(ctx, updateURLsWithUserID, arg.UserID, arg.KeyID)
+	return err
 }

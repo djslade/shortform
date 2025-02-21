@@ -18,7 +18,7 @@ func (cfg *apiConfig) handlerRedirect(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, "URL query parameter is missing", nil)
 		return
 	}
-	url, err := cfg.DB.GetURLByID(context.Background(), urlID)
+	url, err := cfg.db.GetURLByID(context.Background(), urlID)
 	if err != nil {
 		// TODO: Not found
 		respondWithError(w, http.StatusNotFound, "URL not found", nil)

@@ -10,7 +10,7 @@ INSERT INTO refresh_tokens (
     $2,
     $3,
     NOW(),
-    NOW()
+    $4
 )
 RETURNING *;
 

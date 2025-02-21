@@ -13,7 +13,8 @@ import (
 )
 
 type apiConfig struct {
-	DB *database.Queries
+	db        database.Queries
+	jwtSecret string
 }
 
 func main() {
@@ -30,6 +31,11 @@ func main() {
 		log.Fatal("PG_CONNECTION_STRING env variable is not set")
 	}
 
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		log.Fatal("JWT_SECRET env variable is not set")
+	}
+
 	// DB setup
 	db, err := sql.Open("postgres", dbConnectionString)
 	if err != nil {
@@ -38,7 +44,8 @@ func main() {
 
 	// Config
 	config := apiConfig{
-		DB: database.New(db),
+		db:        *database.New(db),
+		jwtSecret: jwtSecret,
 	}
 
 	// Handler

@@ -27,11 +27,10 @@ JOIN refresh_tokens ON users.id=refresh_tokens.user_id
 WHERE refresh_tokens.token=$1
 AND expires_at > NOW();
 
--- name: UpdateUser :one
+-- name: UpdateUser :exec
 UPDATE users 
 SET password_hash=$1,updated_at=NOW() 
-WHERE id=$1
-RETURNING *;
+WHERE id=$1;
 
 -- name: DeleteUser :exec
 DELETE FROM users WHERE id=$1;

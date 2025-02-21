@@ -11,6 +11,12 @@ import (
 	"github.com/google/uuid"
 )
 
+type ApiKey struct {
+	Key       string
+	CreatedAt time.Time
+	ExpiredAt sql.NullTime
+}
+
 type Click struct {
 	ID          uuid.UUID
 	UrlID       sql.NullString
@@ -44,6 +50,7 @@ type Url struct {
 	UpdatedAt   time.Time
 	ExpiredAt   sql.NullTime
 	UserID      uuid.NullUUID
+	KeyID       sql.NullString
 }
 
 type User struct {
