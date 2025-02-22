@@ -13,8 +13,9 @@ import (
 )
 
 type apiConfig struct {
-	db        database.Queries
-	jwtSecret string
+	db             database.Queries
+	jwtSecret      string
+	localIpAddress string
 }
 
 func main() {
@@ -36,6 +37,11 @@ func main() {
 		log.Fatal("JWT_SECRET env variable is not set")
 	}
 
+	localIpAddress := os.Getenv("LOCAL_IP_ADDRESS")
+	if localIpAddress == "" {
+		log.Fatal("LOCAL_IP_ADDRESS env variable is not set")
+	}
+
 	// DB setup
 	db, err := sql.Open("postgres", dbConnectionString)
 	if err != nil {
@@ -44,15 +50,17 @@ func main() {
 
 	// Config
 	config := apiConfig{
-		db:        *database.New(db),
-		jwtSecret: jwtSecret,
+		db:             *database.New(db),
+		jwtSecret:      jwtSecret,
+		localIpAddress: localIpAddress,
 	}
 
 	// Handler
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("POST /api/key", config.handlerCreateKey)
+
 	mux.HandleFunc("GET /api/url-key", config.handlerGetURLsWithKey)
-	mux.HandleFunc("GET /api/url-auth", config.handlerGetURLsAsUser)
 	mux.HandleFunc("POST /api/url-key", config.handlerCreateURLWithKey)
 	mux.HandleFunc("POST /api/url-auth", config.handlerCreateURLAsUser)
 
@@ -61,6 +69,10 @@ func main() {
 	mux.HandleFunc("POST /api/login", config.handlerLogin)
 	mux.HandleFunc("POST /api/refresh", config.handlerRefresh)
 	mux.HandleFunc("DELETE /api/revoke", config.handlerRevoke)
+
+	mux.HandleFunc("POST /api/redirect/{urlID}", config.handlerRedirect)
+
+	mux.HandleFunc("GET /{urlID}", config.handlerRedirect)
 
 	// Server
 	server := http.Server{

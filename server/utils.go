@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"database/sql"
 	"errors"
 	"math/big"
 	"net"
@@ -27,14 +28,22 @@ func generateURLID(length int) (string, error) {
 }
 
 func getClientIP(r *http.Request) string {
-	forwarded := r.Header.Get("X-Forwarded-For")
-	if forwarded != "" {
-		return strings.Split(forwarded, ",")[0] // First IP in the list
+	IPAddress := r.Header.Get("X-Real-Ip")
+	if IPAddress == "" {
+		IPAddress = r.Header.Get("X-Forwarded-For")
 	}
-	// Fallback to RemoteAddr
-	ip, _, err := net.SplitHostPort(r.RemoteAddr)
-	if err != nil {
-		return r.RemoteAddr // As last resort
+	if IPAddress == "" {
+		splitAddr, _, err := net.SplitHostPort(r.RemoteAddr)
+		if err == nil {
+			IPAddress = splitAddr
+		}
 	}
-	return ip
+	return IPAddress
+}
+
+func getNullString(s string) sql.NullString {
+	return sql.NullString{
+		Valid:  s != "",
+		String: s,
+	}
 }

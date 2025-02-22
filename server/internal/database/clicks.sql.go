@@ -26,7 +26,7 @@ INSERT INTO clicks (
     timezone, 
     currency, 
     referral_url, 
-    device, 
+    is_mobile, 
     is_proxy, 
     isp
 )
@@ -47,7 +47,7 @@ VALUES (
     $12,
     $13
 )
-RETURNING id, url_id, created_at, continent, country, region, city, lat, lon, timezone, currency, referral_url, device, is_proxy, isp
+RETURNING id, url_id, created_at, continent, country, region, city, lat, lon, timezone, currency, referral_url, is_mobile, is_proxy, isp
 `
 
 type CreateClickParams struct {
@@ -61,7 +61,7 @@ type CreateClickParams struct {
 	Timezone    sql.NullString
 	Currency    sql.NullString
 	ReferralUrl sql.NullString
-	Device      sql.NullString
+	IsMobile    sql.NullBool
 	IsProxy     sql.NullBool
 	Isp         sql.NullString
 }
@@ -78,7 +78,7 @@ func (q *Queries) CreateClick(ctx context.Context, arg CreateClickParams) (Click
 		arg.Timezone,
 		arg.Currency,
 		arg.ReferralUrl,
-		arg.Device,
+		arg.IsMobile,
 		arg.IsProxy,
 		arg.Isp,
 	)
@@ -96,7 +96,7 @@ func (q *Queries) CreateClick(ctx context.Context, arg CreateClickParams) (Click
 		&i.Timezone,
 		&i.Currency,
 		&i.ReferralUrl,
-		&i.Device,
+		&i.IsMobile,
 		&i.IsProxy,
 		&i.Isp,
 	)
@@ -104,7 +104,7 @@ func (q *Queries) CreateClick(ctx context.Context, arg CreateClickParams) (Click
 }
 
 const getClickByID = `-- name: GetClickByID :one
-SELECT id, url_id, created_at, continent, country, region, city, lat, lon, timezone, currency, referral_url, device, is_proxy, isp FROM clicks WHERE id=$1
+SELECT id, url_id, created_at, continent, country, region, city, lat, lon, timezone, currency, referral_url, is_mobile, is_proxy, isp FROM clicks WHERE id=$1
 `
 
 func (q *Queries) GetClickByID(ctx context.Context, id uuid.UUID) (Click, error) {
@@ -123,7 +123,7 @@ func (q *Queries) GetClickByID(ctx context.Context, id uuid.UUID) (Click, error)
 		&i.Timezone,
 		&i.Currency,
 		&i.ReferralUrl,
-		&i.Device,
+		&i.IsMobile,
 		&i.IsProxy,
 		&i.Isp,
 	)
@@ -131,7 +131,7 @@ func (q *Queries) GetClickByID(ctx context.Context, id uuid.UUID) (Click, error)
 }
 
 const getClicksByURLID = `-- name: GetClicksByURLID :many
-SELECT id, url_id, created_at, continent, country, region, city, lat, lon, timezone, currency, referral_url, device, is_proxy, isp FROM clicks WHERE url_id=$1
+SELECT id, url_id, created_at, continent, country, region, city, lat, lon, timezone, currency, referral_url, is_mobile, is_proxy, isp FROM clicks WHERE url_id=$1
 `
 
 func (q *Queries) GetClicksByURLID(ctx context.Context, urlID sql.NullString) ([]Click, error) {
@@ -156,7 +156,7 @@ func (q *Queries) GetClicksByURLID(ctx context.Context, urlID sql.NullString) ([
 			&i.Timezone,
 			&i.Currency,
 			&i.ReferralUrl,
-			&i.Device,
+			&i.IsMobile,
 			&i.IsProxy,
 			&i.Isp,
 		); err != nil {

@@ -29,5 +29,5 @@ func (cfg *apiConfig) handlerGetURLsWithKey(w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Could not execute query", err)
 	}
-	respondWithJSON(w, http.StatusOK, urls)
+	respondWithJSON(w, http.StatusOK, response{URLs: urls})
 }

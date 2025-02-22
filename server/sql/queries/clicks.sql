@@ -12,7 +12,7 @@ INSERT INTO clicks (
     timezone, 
     currency, 
     referral_url, 
-    device, 
+    is_mobile, 
     is_proxy, 
     isp
 )

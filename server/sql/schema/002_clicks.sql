@@ -12,10 +12,9 @@ CREATE TABLE clicks (
     timezone TEXT,
     currency TEXT,
     referral_url TEXT,
-    device TEXT,
+    is_mobile BOOLEAN,
     is_proxy BOOLEAN,
     isp TEXT
-
 );
 
 -- +goose Down

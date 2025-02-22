@@ -93,13 +93,21 @@ func GetBearerToken(headers http.Header) (string, error) {
 	return splitAuth[1], nil
 }
 
-func MakeRefreshToken() (string, error) {
+func generateRandomString() (string, error) {
 	token := make([]byte, 32)
 	_, err := rand.Read(token)
 	if err != nil {
 		return "", err
 	}
 	return hex.EncodeToString(token), nil
+}
+
+func MakeRefreshToken() (string, error) {
+	return generateRandomString()
+}
+
+func MakeAPIKey() (string, error) {
+	return generateRandomString()
 }
 
 func GetAPIKey(headers http.Header) (string, error) {

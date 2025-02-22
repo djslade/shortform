@@ -30,7 +30,7 @@ type Click struct {
 	Timezone    sql.NullString
 	Currency    sql.NullString
 	ReferralUrl sql.NullString
-	Device      sql.NullString
+	IsMobile    sql.NullBool
 	IsProxy     sql.NullBool
 	Isp         sql.NullString
 }
