@@ -44,6 +44,11 @@ func (cfg *apiConfig) handlerRedirect(w http.ResponseWriter, r *http.Request) {
 		}
 
 		ipAddress := getClientIP(r)
+		if ipAddress == "::1" {
+			// The request came from the same machine as the server is running on
+			// This only happens in testing
+			ipAddress = cfg.localIpAddress
+		}
 		res, err := http.Get(fmt.Sprintf("http://ip-api.com/json/%s?fields=9683929", ipAddress))
 		if err != nil {
 			log.Println(err)
