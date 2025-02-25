@@ -1,9 +1,8 @@
 import { atom } from "jotai";
 
 interface IURL {
-    id: string;
-    src: string;
-    dest: string;
+  id: string;
+  dest: string;
 }
 
-export const urlsAtom = atom<IURL[]>([])
+export const urlsAtom = atom<IURL[]>([]);
